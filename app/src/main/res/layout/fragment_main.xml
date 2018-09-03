@@ -15,11 +15,14 @@
 
         <!--Logo-->
         <ImageView
+            android:src="@drawable/logo"
             android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <!--Phone-->
         <EditText
+            android:textSize="@dimen/h3"
+            android:background="@drawable/textfiled1"
             android:hint="XXX-XXXX"
             android:inputType="phone"
             android:layout_width="match_parent"
@@ -27,6 +30,7 @@
 
         <!--Login-->
         <Button
+            android:background="@drawable/bg_buttom"
             android:text="Login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
