@@ -6,10 +6,88 @@
     tools:context=".DassBoardFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:textSize="@dimen/h1"
+    <ScrollView
+
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Dash Board" />
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!--Current-->
+            <TextView
+                android:textStyle="bold"
+                android:textSize="@dimen/h2"
+                android:text="@string/current"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <!--CompanyA-->
+        <LinearLayout
+            android:layout_marginLeft="@dimen/margin"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@drawable/ic_action_sq"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_gravity="center_vertical"
+                android:textSize="@dimen/h2"
+                android:text="Name of CompanyA = "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:gravity="center_vertical"
+                android:text="1234"
+                android:textSize="@dimen/h2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+
+        </LinearLayout>
+
+            <!--CompanyB-->
+            <LinearLayout
+                android:layout_marginLeft="@dimen/margin"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:src="@drawable/ic_action_sq"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_gravity="center_vertical"
+                    android:textSize="@dimen/h2"
+                    android:text="Name of CompanyB = "
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:gravity="center_vertical"
+                    android:text="1234"
+                    android:textSize="@dimen/h2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+
+            </LinearLayout>
+
+
+            <!--Show Package-->
+
+        </LinearLayout>
+
+
+    </ScrollView>
 
 </FrameLayout>
