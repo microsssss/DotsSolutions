@@ -11,9 +11,30 @@
 
     <!--Drower Menu-->
     <LinearLayout
+        android:layout_gravity="start"
         android:background="#ffffff"
         android:orientation="vertical"
         android:layout_width="320dp"
-        android:layout_height="match_parent"></LinearLayout>
+        android:layout_height="match_parent">
+
+        <!--Show Image Drawer-->
+        <ImageView
+            android:scaleType="fitXY"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:text="Content"
+            android:textSize="@dimen/h1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!--Menu-->
+        <ListView
+            android:id="@+id/ListViewMenu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
 
 </android.support.v4.widget.DrawerLayout>
