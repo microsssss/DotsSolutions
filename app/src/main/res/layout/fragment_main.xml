@@ -27,6 +27,7 @@
             android:textSize="@dimen/h3"
             android:background="@drawable/textfiled1"
             android:hint="ID Customer"
+            android:text="56032200021"
             android:inputType="number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
