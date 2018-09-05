@@ -5,7 +5,7 @@ android {
     defaultConfig {
         applicationId "nuttapon.dots.co.th.dotssolutions"
         minSdkVersion 15
-        targetSdkVersion 27
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -28,4 +28,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.squareup.okhttp:okhttp:2.0.0'
     implementation 'me.dm7.barcodescanner:zbar:1.9.8'
+    implementation 'me.dm7.barcodescanner:zxing:1.9.8'
 }
