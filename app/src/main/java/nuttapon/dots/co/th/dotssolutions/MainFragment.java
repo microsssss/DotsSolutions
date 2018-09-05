@@ -23,7 +23,24 @@ public class MainFragment extends Fragment{
         //Login Controller
         loginController();
 
+        //QR Controller
+        QRController();
+
+
     }// Main Method
+
+    private void QRController() {
+        Button button = getView().findViewById(R.id.btnQR);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+
+            }
+        });
+
+    }
 
     private void loginController() {
         Button button=getView().findViewById(R.id.btnLogin);
