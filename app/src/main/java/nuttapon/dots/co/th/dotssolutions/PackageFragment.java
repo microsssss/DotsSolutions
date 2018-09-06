@@ -87,31 +87,35 @@ public class PackageFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-//  สำหรับ Location
-        if (requestCode == 50) {
 
-            double latAdouble = data.getDoubleExtra("Lat",0);
-            double lngAdouble = data.getDoubleExtra("Lng",0);
-            Log.d("6SepV1","Lat Recevie ==> " + latAdouble);
-            Log.d("6SepV1","Lng Recevie ==> " + lngAdouble);
 
-            TextView latTextView=getView().findViewById(R.id.txtLat);
-            TextView lngTextView=getView().findViewById(R.id.txtLng);
 
-            latTextView.setText("Lat = " + Double.toString(latAdouble));
-            lngTextView.setText("Lng = " + Double.toString(lngAdouble));
+            switch (requestCode) {
+                case 50:
 
-        }  // if
-//    สำหรับ รูปภาพ
-        if (resultCode == getActivity().RESULT_OK && requestCode == 100) {   // ถ้าเลือกรูปภาพไม่่สำเร็จ
+                    double latAdouble = data.getDoubleExtra("Lat",0);
+                    double lngAdouble = data.getDoubleExtra("Lng",0);
+                    Log.d("6SepV1","Lat Recevie ==> " + latAdouble);
+                    Log.d("6SepV1","Lng Recevie ==> " + lngAdouble);
 
-            Uri uri = data.getData();   //เอาค่าที่โยนกลับมาแยกเอาที่ใช้งานกลับมาเท่านั้น
-            showPhoto(uri);
+                    TextView latTextView=getView().findViewById(R.id.txtLat);
+                    TextView lngTextView=getView().findViewById(R.id.txtLng);
 
-        } else {
-            myAlert.normalDialog("Non Choose Image",
-                    "Please Choose on Gallery");
-        }
+                    latTextView.setText("Lat = " + Double.toString(latAdouble));
+                    lngTextView.setText("Lng = " + Double.toString(lngAdouble));
+
+                    break;
+                case 100:
+
+                    if (resultCode == getActivity().RESULT_OK) {
+                        Uri uri = data.getData();   //เอาค่าที่โยนกลับมาแยกเอาที่ใช้งานกลับมาเท่านั้น
+                        showPhoto(uri);
+                    } else {
+                        myAlert.normalDialog("Not Photo","Please Photo on Gallery");
+                    }
+
+                    break;
+            }
 
     }  // onActivityResult
 
