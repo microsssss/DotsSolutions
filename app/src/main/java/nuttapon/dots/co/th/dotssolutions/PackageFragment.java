@@ -7,9 +7,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.Switch;
 
 
@@ -22,7 +25,8 @@ public class PackageFragment extends Fragment {
     private MyAlert myAlert;
     private String displayNameString;
     private String genderString;
-    private boolean genderABoolean = true;
+    private String ageString;
+    private boolean genderABoolean = true, ageABoolean = true;
 
 
 
@@ -38,11 +42,41 @@ public class PackageFragment extends Fragment {
 
 //        Upload Controller
         uploadController();
-//       Radio Controller
 
+//       Radio Controller
         radioControler();
 
+//        Spinner Controller
+        spinnerController();
     }  // Main Method
+
+    private void spinnerController() {
+        Spinner spinner =getView().findViewById(R.id.spinnerAge);
+
+        final String[] ageStrings = myConstant.getAgeStrings();
+        ArrayAdapter<String>stringArrayAdapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_list_item_1, ageStrings);
+        spinner.setAdapter(stringArrayAdapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position!=0) {
+                    ageABoolean=false;
+                    ageString=ageStrings[position];
+                } else {
+                    ageABoolean=true;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                ageABoolean=true;
+            }
+        });
+
+
+    }
 
     private void radioControler() {
         RadioGroup radioGroup=getView().findViewById(R.id.radGroup);
@@ -78,6 +112,9 @@ public class PackageFragment extends Fragment {
                 } else if (genderABoolean){
                     myAlert.normalDialog(getString(R.string.title_no_gender),
                             getString(R.string.message_no_gender));
+                }else if (ageABoolean){
+                    myAlert.normalDialog("No Age",
+                            "กรุณาเลือกช่วงอายุ");
                 }
 
 

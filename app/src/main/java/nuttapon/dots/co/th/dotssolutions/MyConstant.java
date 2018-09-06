@@ -20,6 +20,18 @@ public class MyConstant {
 
 
     //  Array
+    private String[] ageStrings =new String[]{
+            "โปรดเลือกช่วงอายุ",
+            "อายุต่ำกว่า 10 ปี",
+            "11 - 20",
+            "21 - 30",
+            "31 - 40",
+            "อายุมากกว่า 40 ปี ขึ้นไป"
+    };
+
+
+
+
     private String[] titleMenuStrings=new String[]{
             "Dash Board",
             "Package",
@@ -44,6 +56,10 @@ public class MyConstant {
 
 //    Getter
 
+
+    public String[] getAgeStrings() {
+        return ageStrings;
+    }
 
     public String getUrlAddDemoBoy() {
         return urlAddDemoBoy;
