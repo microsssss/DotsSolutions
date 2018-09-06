@@ -3,6 +3,7 @@ package nuttapon.dots.co.th.dotssolutions;
 
 import android.content.Intent;
 import android.content.SearchRecentSuggestionsProvider;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Criteria;
@@ -43,6 +44,7 @@ public class PackageFragment extends Fragment {
     private String genderString;
     private String ageString;
     private String latString, lagString;
+    private String imagePathString;
     private boolean genderABoolean = true, ageABoolean = true;
     private Uri cameraUrl;
 
@@ -178,6 +180,23 @@ public class PackageFragment extends Fragment {
 
         try {
 
+            String[] strings = new String[]{MediaStore.Images.Media.DATA};
+            Cursor cursor = getActivity().getContentResolver().query(uri, strings,
+                    null,
+                    null,
+                    null);
+
+            if (cursor != null) {
+                cursor.moveToFirst();
+                int i =cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                imagePathString=cursor.getString(i);
+            } else {
+                imagePathString= uri.getPath();
+            }
+
+            Log.d("6SepV3","imagePatch ==> " + imagePathString);
+
+
             Bitmap bitmap = BitmapFactory.decodeStream(getActivity()
                     .getContentResolver().openInputStream(uri));
             Bitmap bitmap1 = Bitmap.createScaledBitmap(bitmap,800,600,false);
@@ -269,14 +288,20 @@ public class PackageFragment extends Fragment {
                 } else if (genderABoolean){
                     myAlert.normalDialog(getString(R.string.title_no_gender),
                             getString(R.string.message_no_gender));
-                }else if (ageABoolean){
+                } else if (ageABoolean) {
                     myAlert.normalDialog("No Age",
                             "กรุณาเลือกช่วงอายุ");
+                } else {
+                    uploadPhotoToServer();
                 }
 
 
 
             } // onClick
+
+            private void uploadPhotoToServer() {
+
+            }
         });
     }
 
