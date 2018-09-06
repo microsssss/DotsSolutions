@@ -3,8 +3,11 @@ package nuttapon.dots.co.th.dotssolutions;
 
 import android.content.Intent;
 import android.content.SearchRecentSuggestionsProvider;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Criteria;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -61,12 +64,30 @@ public class PackageFragment extends Fragment {
 //          Point Controller
         pointController();
 
+//        Gallery Controller
+        galleryController();
+
+
     }  // Main Method
+
+    private void galleryController() {
+        ImageView imageView= getView().findViewById(R.id.imvGallery);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(Intent.ACTION_PICK);  // เครื่อนย้ายการทำงาน โดยไปเปิด Service ที่เก็บรูป
+                intent.setType("image/*");   // ค้นหาโปรแกรมที่เก็บ
+                startActivityForResult(intent,100);
+            }
+        });
+
+
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+//  สำหรับ Location
         if (requestCode == 50) {
 
             double latAdouble = data.getDoubleExtra("Lat",0);
@@ -79,9 +100,38 @@ public class PackageFragment extends Fragment {
 
             latTextView.setText("Lat = " + Double.toString(latAdouble));
             lngTextView.setText("Lng = " + Double.toString(lngAdouble));
+
+        }  // if
+//    สำหรับ รูปภาพ
+        if (resultCode == getActivity().RESULT_OK && requestCode == 100) {   // ถ้าเลือกรูปภาพไม่่สำเร็จ
+
+            Uri uri = data.getData();   //เอาค่าที่โยนกลับมาแยกเอาที่ใช้งานกลับมาเท่านั้น
+            showPhoto(uri);
+
+        } else {
+            myAlert.normalDialog("Non Choose Image",
+                    "Please Choose on Gallery");
         }
 
     }  // onActivityResult
+
+    private void showPhoto(Uri uri) {
+
+        try {
+
+            Bitmap bitmap = BitmapFactory.decodeStream(getActivity()
+                    .getContentResolver().openInputStream(uri));
+            Bitmap bitmap1 = Bitmap.createScaledBitmap(bitmap,800,600,false);
+
+            ImageView imageView=getView().findViewById(R.id.imvPhoto);
+            imageView.setImageBitmap(bitmap1);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
 
     private void pointController() {
         ImageView imageView=getView().findViewById(R.id.imvPoint);
