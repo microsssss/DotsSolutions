@@ -1,0 +1,164 @@
+package nuttapon.dots.co.th.dotssolutions;
+
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.support.v4.app.FragmentActivity;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
+
+    private GoogleMap mMap;
+    private double latADouble=0;
+    private double lngADouble=0;
+    private LocationManager locationManager;  // เปิด Service
+    private Criteria criteria;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_maps);
+
+//        SetUp Location
+        setUpLocation();
+
+
+        // การสร้าง Fragment
+        createFragment();
+
+//        Create Toolbar
+        createToolbar();
+
+
+    } /// Main Mathod
+
+    @Override
+    protected void onResume() {  // ถ้าช่วงใช้งานมีโทรศัพย์เข้ามาจะหยุดชั่วคราว
+        super.onResume();
+
+        findLatLng();
+
+    }
+
+    private void findLatLng() {
+
+//        for Network หาพิกัดโดย Internet
+
+
+
+//        for Card GPS หาพิกัดโดย GPS
+
+
+    }
+
+    @Override
+    protected void onStop() {  // จะทำการปิด Service Location ก่อนปิด Program
+        super.onStop();
+        locationManager.removeUpdates(locationListener);
+
+    }
+
+    public Location myFindLocation(String providerString) {
+
+        Location location=null;
+
+            if (locationManager.isProviderEnabled(providerString)){  // ถ้าเชื่อต่อกับ Card ์Network ผ่านทาง Internet ได้จะได้ True
+                locationManager.requestLocationUpdates(providerString,
+                        1000,
+                        10,
+                        locationListener);
+                location=locationManager.getLastKnownLocation(providerString);
+            }
+
+
+        return location;
+    }
+
+    public LocationListener locationListener =new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {    // ถ้าขยับจะให้ทำอะไร
+
+            latADouble=location.getLatitude();
+            lngADouble=location.getLongitude();
+
+
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {   //สพาวะที่ ต่อ หรือ ต่อไม่ได้ จะให้ทำอะไร
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {   //  ถ้าเชื่อมต่อกับ Provider ได้จะให้ทำอะไร
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {  //ถ้าไม่เชื่อมต่อกับ Provider ได้จะให้ทำอะไร
+
+        }
+    };
+
+
+
+    private void setUpLocation() {
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);   // ขอเปิด Location Service
+        criteria=new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);    //  ACCURACY_FINE หาพิกัดแบบค่าผิดพลาด น้อยที่สุด
+        criteria.setAltitudeRequired(false);
+        criteria.setBearingRequired(false);
+    }
+
+    private void createFragment() {
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+    }
+
+    private void createToolbar() {
+        Toolbar toolbar =findViewById(R.id.toolbarMap);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setSubtitle(getString(R.string.choose_point));
+
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        toolbar.setNavigationIcon(R.drawable.ic_action_point_bar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                finish();
+            }
+        });
+
+
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        // Add a marker in Sydney and move the camera
+        LatLng sydney = new LatLng(-34, 151);
+        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    }
+
+
+
+
+} /// Main Class
