@@ -1,5 +1,6 @@
 package nuttapon.dots.co.th.dotssolutions;
 
+import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -8,12 +9,14 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -22,8 +25,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
     private double latADouble=0;
     private double lngADouble=0;
+    private double endLaADouble;
+    private double endLnADouble;
     private LocationManager locationManager;  // เปิด Service
     private Criteria criteria;
+
 
 
     @Override
@@ -56,10 +62,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 //        for Network หาพิกัดโดย Internet
 
-
+        Location networkLocation=myFindLocation(LocationManager.NETWORK_PROVIDER);
+        if (networkLocation != null) {
+            latADouble=networkLocation.getLatitude();
+            lngADouble=networkLocation.getLongitude();
+        }
 
 //        for Card GPS หาพิกัดโดย GPS
+        Location gpsLocation=myFindLocation(LocationManager.GPS_PROVIDER);
+        if (networkLocation != null) {
+            latADouble=gpsLocation.getLatitude();
+            lngADouble=gpsLocation.getLongitude();
+        }
 
+        Log.d("6SepV1","Lat ==> "+ latADouble);
+        Log.d("6SepV1","Lat ==> "+ lngADouble);
 
     }
 
@@ -141,6 +158,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
 
+                Intent intent = new Intent(MapsActivity.this, ServiceActivity.class);
+                intent.putExtra("Lat",endLaADouble);
+                intent.putExtra("Lng",endLnADouble);
+                setResult(50,intent);    // ตอนมาส่งค่า 50 มา  ตอนกลับก็ต้องส่งค่า 50 กลับด้วย
                 finish();
             }
         });
@@ -149,16 +170,49 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(GoogleMap googleMap) {   //คือ ทำงานหลังจากที่แผนที่เกิดขึ้นมาแล้ว
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+//        Crecate Center Map
+        if (latADouble != 0) {
+
+            LatLng centerLatLng =new LatLng(latADouble,lngADouble);
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(centerLatLng,16));  // เลข 16 คือระยะที่ให้สูงจากพื้นเวลาโชว์
+            createMarker(centerLatLng);
+
+        } else {
+            findLatLng();
+        }
+
+
+        // mMap Controller  ทำให้คลิกบน แผนที่
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                mMap.clear();                 // Clear ค่า Marker ของเก่าออก
+                createMarker(latLng);
+
+            }
+        });
+
+
+    }  // On Map
+
+    private void createMarker(LatLng centerLatLng) {  //การใส่ Marker
+
+        endLaADouble=centerLatLng.latitude;
+        endLnADouble=centerLatLng.longitude;
+        Log.d("6SepV1","endLat ==>" + endLnADouble);
+        Log.d("6SepV1","endLng ==>" + endLaADouble);
+
+        MarkerOptions markerOptions=new MarkerOptions()
+                .position(centerLatLng)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_action_marker));   // เปลี่ยน Icon
+
+        mMap.addMarker(markerOptions);
+
+
     }
-
-
 
 
 } /// Main Class

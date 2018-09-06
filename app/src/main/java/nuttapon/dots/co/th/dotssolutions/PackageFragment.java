@@ -2,11 +2,13 @@ package nuttapon.dots.co.th.dotssolutions;
 
 
 import android.content.Intent;
+import android.content.SearchRecentSuggestionsProvider;
 import android.location.Criteria;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 
 
 /**
@@ -30,11 +33,8 @@ public class PackageFragment extends Fragment {
     private String displayNameString;
     private String genderString;
     private String ageString;
+    private String latString, lagString;
     private boolean genderABoolean = true, ageABoolean = true;
-
-
-
-
 
 
 
@@ -62,6 +62,26 @@ public class PackageFragment extends Fragment {
         pointController();
 
     }  // Main Method
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 50) {
+
+            double latAdouble = data.getDoubleExtra("Lat",0);
+            double lngAdouble = data.getDoubleExtra("Lng",0);
+            Log.d("6SepV1","Lat Recevie ==> " + latAdouble);
+            Log.d("6SepV1","Lng Recevie ==> " + lngAdouble);
+
+            TextView latTextView=getView().findViewById(R.id.txtLat);
+            TextView lngTextView=getView().findViewById(R.id.txtLng);
+
+            latTextView.setText("Lat = " + Double.toString(latAdouble));
+            lngTextView.setText("Lng = " + Double.toString(lngAdouble));
+        }
+
+    }  // onActivityResult
 
     private void pointController() {
         ImageView imageView=getView().findViewById(R.id.imvPoint);
